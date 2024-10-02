@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effects</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        div.ex {
+            background-color: #e5eecc;
+            padding: 7px;
+            border: solid 1px #c3c3c3;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="HIDE">Hide</button>
+    <button class="SHOW">Show</button>
+    <button class="toggle">Toggle</button>
+    <p>This is a paragraph with little content.</p>
+    <p>This is another small paragraph.</p>
+    <p>This is a paragraph with little content.</p>
+    <p>This is another small paragraph.</p>
+    <p>This is a paragraph with little content.</p>
+    <p>This is another small paragraph.</p>
+    <h3 class="t1">Island Trading</h3>
+    <div class="ex">
+        <button class="hide">Hide me</button>
+        <p>Contact: Helen Bennett<br> Garden House Crowther Way<br> London
+        </p>
+    </div>
+
+    <h3 class="t1">Paris Specialities</h3>
+
+    <div class="ex">
+        <button class="hide">Hide me</button>
+        <p>Contact: Marie Bertrand<br> 265, Boulevard Charonne<br> Paris
+        </p>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('.HIDE').click(function() {
+                $('p').hide(2000);
+            }); //hide the <p> in 2Sec
+            $('.SHOW').click(function() {
+                $('p').show(2000);
+            }); //Show the <p> in 2Sec
+            $('.toggle').click(function() {
+                $('p').toggle(2000);
+            }); //toggle in <p> in 2Sec
+            $(".ex .hide").click(function() {
+                $(this).parents(".ex").hide("slow");
+            }); //to hide the parent
+            $('.t1').on('click', function() {
+                $(this).next('.ex').show('slow');
+            });
+        });
+    </script>
+</body>
+
+</html>

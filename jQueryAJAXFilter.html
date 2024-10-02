@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AJAX Table with Filter and Add Item</title>
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        form,
+        #table-container {
+            flex-basis: 50%;
+            margin: 20px;
+            height: 0;
+            padding-bottom: 100%;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            form,
+            #table-container {
+                flex-basis: 100%;
+                margin: 10px;
+            }
+        }
+        
+        table {
+            border-collapse: collapse;
+            /* Add a hover effect to rows */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            /* Add a hover effect to cells */
+            transition: background-color 0.2s ease;
+        }
+        
+        th:hover,
+        td:hover {
+            background-color: #f0f0f0;
+        }
+        /* Make the table responsive */
+        
+        table {
+            width: 100%;
+            margin: 0 auto;
+        }
+        /* Add a media query to adjust the table layout on smaller screens */
+        
+        @media only screen and (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            th,
+            td {
+                padding: 4px;
+            }
+        }
+        /* Form styles */
+        
+        form {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #aaa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        /* Responsive form styles */
+        
+        @media only screen and (max-width: 768px) {
+            form {
+                padding: 10px;
+            }
+            label {
+                margin-bottom: 5px;
+            }
+            input[type="text"],
+            input[type="number"] {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>AJAX Table with Filter and Add Item</h1>
+    <input type="text" id="filter-input" placeholder="Filter by item name...">
+    <button id="filter-btn">Filter</button>
+    <div class="container">
+        <form id="add-item-form">
+            <label for="item-id">Item ID:</label>
+            <input type="text" id="item-id" required>
+            <span class="error-message" id="item-id-error"></span>
+            <label for="item-name">Item Name:</label>
+            <input type="text" id="item-name" required>
+            <span class="error-message" id="item-name-error"></span>
+            <label for="description">Description:</label>
+            <input type="text" id="description" required>
+            <span class="error-message" id="description-error"></span>
+            <label for="price">Price:</label>
+            <input type="number" id="price" required>
+            <span class="error-message" id="price-error"></span>
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" required>
+            <span class="error-message" id="stock-error"></span>
+            <button id="add-btn">Add Item</button>
+        </form>
+        <div id="table-container">...</div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // load table data from txt file via AJAX
+            $.ajax({
+                type: "GET",
+                url: "./table.txt",
+                dataType: "text",
+                success: function(data) {
+                    // parse table data from txt file
+                    var tableData = [];
+                    var rows = data.split("\n");
+                    for (var i = 1; i < rows.length; i++) {
+                        var row = rows[i].split("|");
+                        tableData.push({
+                            "Item ID": $.trim(row[1]),
+                            "Item Name": $.trim(row[2]),
+                            "Description": $.trim(row[3]),
+                            "Price": $.trim(row[4]),
+                            "Stock": $.trim(row[5]),
+                        });
+                    }
+
+                    // create table HTML
+                    var tableHTML = "<table>";
+                    tableHTML += "<tr><th>Item ID</th><th>Item Name</th><th>Description</th><th>$ Price</th><th>Stock per piece</th><th>Actions</th></tr>";
+                    $.each(tableData, function(index, item) {
+                        tableHTML += "<tr>";
+                        tableHTML += "<td>" + item["Item ID"] + "</td>";
+                        tableHTML += "<td>" + item["Item Name"] + "</td>";
+                        tableHTML += "<td>" + item["Description"] + "</td>";
+                        tableHTML += "<td>" + item["Price"] + "</td>";
+                        tableHTML += "<td>" + item["Stock"] + "</td>";
+                        tableHTML += "<td><button class='delete-btn' data-index='" + index + "'>Delete</button></td>";
+                        tableHTML += "</tr>";
+                    });
+                    tableHTML += "</table>";
+
+                    // display table
+                    $("#table-container").html(tableHTML);
+
+                    // add filter functionality
+                    $("#filter-btn").on("click", function() {
+                        var filterValue = $("#filter-input").val().toLowerCase();
+
+                        // Iterate through each table row except for the first one (the header)
+                        $("table tr").not(":first").each(function() {
+                            var rowText = '';
+
+                            // Iterate through each td in the row and concatenate the text
+                            $(this).find("td").each(function() {
+                                rowText += $(this).text().toLowerCase() + ' ';
+                            });
+
+                            // Check if the concatenated row text contains the filter value
+                            if (rowText.indexOf(filterValue) === -1) {
+                                $(this).hide();
+                            } else {
+                                $(this).show();
+                            }
+                        });
+                    });
+
+
+                    // add item functionality
+                    $("#add-btn").on("click", function(event) {
+                        event.preventDefault();
+                        var itemid = $("#item-id").val();
+                        var itemName = $("#item-name").val();
+                        var description = $("#description").val();
+                        var price = $("#price").val();
+                        var stock = $("#stock").val();
+
+                        // add item to table data
+                        tableData.push({
+                            "Item ID": itemid,
+                            "Item Name": itemName,
+                            "Description": description,
+                            "Price": price,
+                            "Stock": stock
+                        });
+
+                        // update table HTML
+                        var newRowHTML = "<tr>";
+                        newRowHTML += "<td>" + itemid + "</td>";
+                        newRowHTML += "<td>" + itemName + "</td>";
+                        newRowHTML += "<td>" + description + "</td>";
+                        newRowHTML += "<td>" + price + "</td>";
+                        newRowHTML += "<td>" + stock + "</td>";
+                        newRowHTML += "<td><button class='delete-btn' data-index='" + (tableData.length - 1) + "'>Delete</button></td>";
+                        newRowHTML += "</tr>";
+                        $("table").append(newRowHTML);
+
+                        // update table_data.txt file via AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "./update_table_dat.php",
+                            data: {
+                                data: tableData
+                            },
+                            success: function() {
+                                console.log("Table data updated successfully!");
+                            }
+                        });
+
+                        // clear form fields
+                        $("#item-name").val("");
+                        $("#description").val("");
+                        $("#price").val("");
+                        $("#stock").val("");
+                    });
+
+                    // delete item functionality
+                    $(document).on("click", ".delete-btn", function() {
+                        var rowIndex = $(this).data("index");
+
+                        // remove item from table data
+                        tableData.splice(rowIndex, 1);
+
+                        // remove row from the table
+                        $(this).closest("tr").remove();
+
+                        // update table_data.txt file via AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "./update_table_dat.php",
+                            data: {
+                                data: tableData
+                            },
+                            success: function() {
+                                console.log("Table data updated successfully after deletion!");
+                            }
+                        });
+
+                        // update index data for delete buttons
+                        $("table tr").each(function(index) {
+                            $(this).find(".delete-btn").attr("data-index", index - 1);
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

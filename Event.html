@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Event of jQuery</h1>
+    <h2>click Event</h2>
+    <p id="d">This is a paragraph which was selected by the id</p>
+    <button id="btn-hide">Click to hide by Id</button>
+    <button id="btn-show">Click to show by Id</button>
+    <h2>dblclick</h2>
+    <p class="dblh">Please double click to hide me</p>
+    <p class="dbls">Please double click to Show the above paragraph which was hide.</p>
+    <h2>Mouseenter</h2>
+    <p class="d1">Move the mouse here to get the alert message show.</p>
+    <h2>Mouseleave</h2>
+    <p class="d2">leave the mouse from here to get the alert message show.</p>
+    <h2>Mousemove</h2>
+    <p class="d3">Mouse the mouse from here to get incressed the font-size the paragraphs</p>
+    <h2 class="hoverme">Hover me</h2>
+    <div class="demo"></div>
+    <script>
+        $(document).ready(function() {
+            $("#btn-hide").click(function() {
+                $("#d").hide();
+            }); //click to hide
+            $("#btn-show").click(function() {
+                $("#d").show();
+                onclick
+            }); //click to show
+            $(".dblh").dblclick(function() {
+                $(this).hide();
+            }); //Double Click to hide
+            $(".dbls").dblclick(function() {
+                $(".dblh").show();
+            }); //double click to show
+            $(".d1").mouseenter(function() {
+                alert("Hello User to enter the mouseenter area");
+            }); //mouse enter form here to alert
+            $(".d2").mouseleave(function() {
+                alert("Hello User to leave the mouseleave area");
+            }); //mouse leave form here to alert
+            // $(".d3").mousemove(function() {
+            //     var fontSize = parseInt($(this).css("font-size"));
+            //     $(this).css("font-size", fontSize + 1);
+            // });//mousemove to incress the font size
+            $(".d3").mouseover(function() {
+                $(this).css("font-size", "50px");
+            }); //mouse over incress the font size
+            $(".hoverme").hover(function() {
+                $(".demo").append("<p>This paragraph was made by using hover me</p>");
+            }); //hover the element to display the <p> 
+        });
+    </script>
+</body>
+
+</html>

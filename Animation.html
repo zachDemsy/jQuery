@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Slide</title>
+</head>
+
+<body>
+    <button class="btn1">Start Animation for Toggle</button>
+    <button class="btn2">Start Animation for relative value</button>
+    <button class="btn3">Start Animation for Uses Queue Functionality</button>
+    <button id="stop">TO Stop the Animation</button>
+    <p>By default, all HTML elements have a static position, and cannot be moved. To manipulate the position, remember to first set the CSS position property of the element to relative, fixed, or absolute!</p>
+    <div style="background:#98bf21;height:100px;width:100px;position:absolute;">HELLO</div>
+    <script>
+        $(document).ready(function() {
+            $(".btn1").click(function() {
+                $("div").animate({
+                    left: '250px',
+                    opacity: 'toggle',
+                    height: 'toggle',
+                    width: 'toggle'
+
+                }).animate({
+                    left: '250px',
+                    height: '+=150px',
+                    width: '+=150px'
+                });;
+            });
+            $(".btn2").click(function() {
+                $("div").animate({
+                    left: '250px',
+                    height: '+=150px',
+                    width: '+=150px'
+                });
+            });
+            $(".btn3").click(function() {
+                var div = $("div");
+                div.animate({
+                    height: '300px',
+                    fontSize: '1em',
+                    opacity: "0.7"
+                }, 3000, function() {
+                    $(this).css("background-color", "blue"); // change background color to blue
+                });
+                div.animate({
+                    width: "300px",
+                    fontSize: '3em',
+                    opacity: "0.4"
+                }, 3000, function() {
+                    $(this).css("background-color", "red"); // change background color to red
+                });
+                div.animate({
+                    height: "100px",
+                    fontSize: '3em',
+                    opacity: "0.4"
+                }, 3000, function() {
+                    $(this).css("background-color", "green"); // change background color to green
+                });
+                div.animate({
+                    width: "100px",
+                    opacity: "0.7",
+                    fontSize: '1em'
+                }, 3000, function() {
+                    $(this).css("background-color", "yellow"); // change background color to yellow
+                });
+            });
+            $("#stop").click(function() {
+                $("div").stop(true, true);
+            });
+        });
+    </script>
+</body>
+
+</html>

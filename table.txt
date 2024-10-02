@@ -1,0 +1,2 @@
+1|Apple|fresh apple|0.25|100
+2|mango|fresh mango|1.25|100

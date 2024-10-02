@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiding Method</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <button id="btnI">Click me for fade In</button>
+    <button id="btnO">Click me for fade Out</button>
+    <button id="btnT">Click me for fade Toggle</button>
+    <button id="btnTo">Click me for fade To Opacity</button>
+    <div class="red" style="height: 40px; width: 40px; background-color: red; display: none; margin: 1%;">
+        <p id="p1">Hello</p>
+    </div>
+    <div class="aqua" style="height: 40px; width: 40px; background-color: aqua; display: none; margin: 1%;">
+        <p id="p2">World</p>
+    </div>
+    <div class="blue" style="height: 40px; width: 40px; background-color: blue; display: none; margin: 1%;">
+        <p id="p3">!</p>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+        $("#btnI").click(function() {
+            $(".red").fadeIn();
+            $(".aqua").fadeIn("slow");
+            $(".blue").fadeIn(3000);
+        });
+        $("#btnO").click(function() {
+            $(".red").fadeOut();
+            $(".aqua").fadeOut("slow");
+            $(".blue").fadeOut(3000);
+        });
+        $("#btnT").click(function() {
+            $(".red").fadeToggle();
+            $(".aqua").fadeToggle("slow");
+            $(".blue").fadeToggle(3000);
+        });
+        $("#btnTo").click(function() {
+            $(".red").fadeTo("fast", 0.3);
+            $(".aqua").fadeTo("slow", 0.5);
+            $(".blue").fadeTo(3000, 0.7);
+        });
+    });
+</script>
+
+</html>

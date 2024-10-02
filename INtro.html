@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selactor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>basic jquery selector using for hiding and showing</h1>
+    <p id="d">This is a paragraph which was selected by the id</p>
+    <button id="btn-hide">Click to hide by Id</button>
+    <button id="btn-show">Click to show by Id</button>
+    <p class="d">This is a paragraph which was selected by the class</p>
+    <button class="btn-hide">Click to hide by Class</button>
+    <button class="btn-show">Click to show by Class</button>
+    <br><br>
+    <button class="hideAll">Click me to hide all</button>
+    <button class="ShowAll">Click me to Show all</button>
+    <script>
+        $(document).ready(function() {
+            $("#btn-hide").click(function() {
+                $("#d").hide()
+            }); // hide the paragraph with id "d"
+            $("#btn-show").click(function() {
+                $("#d").show()
+            }); // show the paragraph with id "d"
+            $(".btn-hide").click(function() {
+                $(".d").hide()
+            }); // hide all the paragraphs with class "d"
+            $(".btn-show").click(function() {
+                $(".d").show()
+            }); // show all the paragraphs with class "d"
+            $(".hideAll").click(function() {
+                $("*p", ).hide() //hide all the element *
+            });
+            $(".ShowAll").click(function() {
+                $("*p").show() //show all the element *
+            })
+        })
+    </script>
+</body>
+
+</html>
